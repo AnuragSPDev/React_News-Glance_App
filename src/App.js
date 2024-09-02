@@ -31,7 +31,6 @@ export default class App extends Component {
   }
 
   toggleMode = () =>{
-    console.log('Reached toggleMode()');
     console.log(`mode: ${this.state.mode}`);
     if (this.state.mode === 'light') {
       this.setState({mode: 'dark'})
