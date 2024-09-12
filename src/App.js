@@ -1,15 +1,14 @@
+import React, { Component } from 'react';
+import {
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 import './App.css';
-import React, { Component } from 'react'
+import Gadgets360News from './components/Gadgets360News';
 import Navbar from './components/Navbar';
 import News from './components/News';
 import TechCrunchNews from './components/TechCrunchNews';
-import Gadgets360News from './components/Gadgets360News';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  // Link
-} from "react-router-dom";
 
 export default class App extends Component {
   constructor(props) {
