@@ -14,6 +14,8 @@ import TechCrunchNews from './components/TechCrunchNews';
 
 
 export default class App extends Component {
+  apiKey = process.env.REACT_APP_NEWS_API_KEY;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +36,6 @@ export default class App extends Component {
   }
 
   toggleMode = () => {
-    console.log(`mode: ${this.state.mode}`);
     if (this.state.mode === 'light') {
       this.setState({ mode: 'dark' })
       document.body.style.backgroundColor = '#02456b';
@@ -46,12 +47,12 @@ export default class App extends Component {
     }
   }
 
+  
   setProgress = (progress) => {
     this.setState({progress: progress})
   }
 
   render() {
-    const apiKey = 'afcf913491dd4285b23ec0649d5ea39f';
     return (
       <div>
         <Router>
@@ -64,15 +65,15 @@ export default class App extends Component {
             // onLoaderFinished={() => setProgress(0)}
           />
           <Routes>
-            <Route exact path='/' element={<News setProgress={this.setProgress} key='general' mode={this.state.mode} pageSize={12} apiKey={apiKey} country='in' category='general' />} />
-            <Route exact path='/business' element={<News setProgress={this.setProgress} key='business' mode={this.state.mode} pageSize={12} apiKey={apiKey} country='in' category='business' />} />
-            <Route exact path='/entertainment' element={<News setProgress={this.setProgress} key='entertainment' mode={this.state.mode} pageSize={12} apiKey={apiKey} country='in' category='entertainment' />} />
-            <Route exact path='/health' element={<News setProgress={this.setProgress} key='health' mode={this.state.mode} pageSize={12} apiKey={apiKey} country='in' category='health' />} />
-            <Route exact path='/science' element={<News setProgress={this.setProgress} key='science' mode={this.state.mode} pageSize={12} apiKey={apiKey} country='in' category='science' />} />
-            <Route exact path='/sports' element={<News setProgress={this.setProgress} key='sports' mode={this.state.mode} pageSize={12} apiKey={apiKey} country='in' category='sports' />} />
-            <Route exact path='/technology' element={<News setProgress={this.setProgress} key='technology' mode={this.state.mode} pageSize={12} apiKey={apiKey} country='in' category='technology' />} />
-            <Route exact path='/techcrunchnews' element={<TechCrunchNews setProgress={this.setProgress} key='techcrunch' mode={this.state.mode} pageSize={12} apiKey={apiKey} category='techcrunch' />} />
-            <Route exact path='/gadgetes360' element={<Gadgets360News setProgress={this.setProgress} key='gadgetes360' mode={this.state.mode} pageSize={12} apiKey={apiKey} category='gadgetes360' />} />
+            <Route exact path='/' element={<News setProgress={this.setProgress} key='general' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='general' />} />
+            <Route exact path='/business' element={<News setProgress={this.setProgress} key='business' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='business' />} />
+            <Route exact path='/entertainment' element={<News setProgress={this.setProgress} key='entertainment' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='entertainment' />} />
+            <Route exact path='/health' element={<News setProgress={this.setProgress} key='health' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='health' />} />
+            <Route exact path='/science' element={<News setProgress={this.setProgress} key='science' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='science' />} />
+            <Route exact path='/sports' element={<News setProgress={this.setProgress} key='sports' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='sports' />} />
+            <Route exact path='/technology' element={<News setProgress={this.setProgress} key='technology' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='technology' />} />
+            <Route exact path='/techcrunchnews' element={<TechCrunchNews setProgress={this.setProgress} key='techcrunch' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} category='techcrunch' />} />
+            <Route exact path='/gadgetes360' element={<Gadgets360News setProgress={this.setProgress} key='gadgetes360' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} category='gadgetes360' />} />
           </Routes>
           <ScrollToTopButton />
         </Router>
