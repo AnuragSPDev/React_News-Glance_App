@@ -9,6 +9,7 @@ import './App.css';
 import Gadgets360News from './components/Gadgets360News';
 import Navbar from './components/Navbar';
 import News from './components/News';
+import ScrollToTopButton from './components/ScrollToTopButton';
 import TechCrunchNews from './components/TechCrunchNews';
 
 
@@ -73,6 +74,7 @@ export default class App extends Component {
             <Route exact path='/techcrunchnews' element={<TechCrunchNews setProgress={this.setProgress} key='techcrunch' mode={this.state.mode} pageSize={12} apiKey={apiKey} category='techcrunch' />} />
             <Route exact path='/gadgetes360' element={<Gadgets360News setProgress={this.setProgress} key='gadgetes360' mode={this.state.mode} pageSize={12} apiKey={apiKey} category='gadgetes360' />} />
           </Routes>
+          <ScrollToTopButton />
         </Router>
       </div>
     )

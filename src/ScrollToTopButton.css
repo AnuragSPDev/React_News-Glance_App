@@ -1,0 +1,24 @@
+.scroll-to-top-btn {
+    bottom: 20px;
+    right: 20px;
+    background-color: #00aefff4;
+    position: fixed;
+    color: white;
+    border: none;
+    border-radius: 10%;
+    padding: 10px;
+    cursor: pointer;
+    display: none;  /* Initially hidden */
+    /* transition: opacity 0.3s; */
+}
+
+.scroll-to-top-btn.show {
+    display: block;
+    /* Shown when scrolled */
+    opacity: 1;
+}
+
+.scroll-to-top-btn.hide {
+    opacity: 0;
+    /* Smoothly hide button */
+}
