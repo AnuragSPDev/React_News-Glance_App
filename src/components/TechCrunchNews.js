@@ -8,15 +8,19 @@ import Spinner from './Spinner';
 export default class News extends Component {
 
     static propTypes = {
+        mode: PropTypes.string,
         pageSize: PropTypes.number,
         country: PropTypes.string,
-        category: PropTypes.string
+        category: PropTypes.string,
+        setProgress: PropTypes.func,
     };
 
     static defaultProps = {
+        mode: 'light',
         pageSize: 10,
         country: 'in',
-        category: 'techcrunch'
+        category: 'techcrunch',
+        setProgress: () => { }
     }
 
     constructor(props) {
@@ -39,14 +43,17 @@ export default class News extends Component {
     async updateNews() {
         let url = `https://newsapi.org/v2/everything?domains=techcrunch.com&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({ loading: true });
+        this.props.setProgress(20);
         let response = await fetch(url);
+        this.props.setProgress(50);
         let data = await response.json();
-        // console.log(data);
+        this.props.setProgress(70);
         this.setState({
             articles: data.articles,
             totalResults: data.totalResults,
             loading: false
         })
+        this.props.setProgress(100);
     }
     async componentDidMount() {
         // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}
@@ -137,7 +144,7 @@ export default class News extends Component {
         return (
             // <div className='container'>
             <>
-                <h2 className="text-center my-3" style={{color: this.props.mode==='light'?'black': 'white'}}>{`Top News - ${this.capitalizeFirstLetter(this.props.category)}`}</h2>
+                <h2 className="text-center my-3" style={{ color: this.props.mode === 'light' ? 'black' : 'white' }}>{`Top News - ${this.capitalizeFirstLetter(this.props.category)}`}</h2>
                 {this.state.loading && <Spinner />}
                 <InfiniteScroll
                     hasMore={this.state.articles.length !== this.state.totalResults}
@@ -153,12 +160,12 @@ export default class News extends Component {
                                 return <div className="col-md-4 my-2" key={element.url}>
                                     <NewsItem title={element.title ? element.title.slice(0, 40) : ''}
                                         description={element.description ? element.description.slice(0, 50) : ''}
-                                        imageUrl={element.urlToImage ? element.urlToImage : '/logo192.png'} 
+                                        imageUrl={element.urlToImage ? element.urlToImage : '/logo192.png'}
                                         newsUrl={element.url}
-                                        author={element.author} 
-                                        source={element.source.name} 
-                                        date={element.publishedAt} 
-                                        mode={this.props.mode}/>
+                                        author={element.author}
+                                        source={element.source.name}
+                                        date={element.publishedAt}
+                                        mode={this.props.mode} />
                                 </div>
                             })}
                         </div>

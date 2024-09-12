@@ -41,14 +41,18 @@ export default class News extends Component {
     async updateNews() {
         let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({ loading: true });
+        this.props.setProgress(20);
         let response = await fetch(url);
+        this.props.setProgress(50);
         let data = await response.json();
+        this.props.setProgress(70);
         // console.log(data);
         this.setState({
             articles: data.articles,
             totalResults: data.totalResults,
             loading: false
         })
+        this.props.setProgress(100);
     }
     async componentDidMount() {
         // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}
@@ -136,6 +140,7 @@ export default class News extends Component {
 
     render() {
         return (
+            <>
             <div className='container'>
                 <h2 className="text-center my-3" style={{color: this.props.mode==='light'?'black': 'white'}}>
                     {`Top News - ${this.capitalizeFirstLetter(this.props.category)}`}</h2>
@@ -169,6 +174,7 @@ export default class News extends Component {
                     <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)} type="button" className="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button>
                 </div> */}
             </div>
+            </>
         )
     }
 }

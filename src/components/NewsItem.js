@@ -5,12 +5,19 @@ import React, { Component } from 'react';
 export default class NewsItem extends Component {
 
   static propTypes = {
-    mode: PropTypes.string
+    mode: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+    newsUrl: PropTypes.string.isRequired,
+    author: PropTypes.string,
+    source: PropTypes.string,
+    date: PropTypes.string,
   }
 
-  // static defaultProps = {
-  //   mode: 'light'
-  // }
+  static defaultProps = {
+    mode: 'light'
+  }
 
   render() {
     let { title, description, imageUrl, newsUrl, author, source, date, mode } = this.props;
