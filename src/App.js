@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
   Route,
   BrowserRouter as Router,
@@ -13,71 +13,77 @@ import ScrollToTopButton from './components/ScrollToTopButton';
 import TechCrunchNews from './components/TechCrunchNews';
 
 
-export default class App extends Component {
-  apiKey = process.env.REACT_APP_NEWS_API_KEY;
+export default function App()  {
+  const apiKey = process.env.REACT_APP_NEWS_API_KEY;
+  const [mode, setMode] = useState('light');
+  const [alert, setAlert] = useState(null);
+  const [progress, setProgress] = useState(10);
+  const [message, setMessage] = useState('');
+  const [type, setType] = useState('');
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      mode: 'light',
-      alert: null,
-      progress: 10,
-    }
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     mode: 'light',
+  //     alert: null,
+  //     progress: 10,
+  //   }
+  // }
 
-  showAlert = (message, type) => {
-    this.setState({
-      message: message,
-      type: type
-    })
+  const showAlert = (message, type) => {
+    setMessage(message);
+    setType(type);
+    // this.setState({
+    //   message: message,
+    //   type: type
+    // })
     setTimeout(() => {
-      this.setState({ alert: null });
+      setAlert(null);
+      // this.setState({ alert: null });
     }, 3000);
   }
 
-  toggleMode = () => {
-    if (this.state.mode === 'light') {
-      this.setState({ mode: 'dark' })
+  const toggleMode = () => {
+    if (mode === 'light') {
+      setMode('dark')
       document.body.style.backgroundColor = '#02456b';
-      this.showAlert('Dark Mode Enabled', 'success');
+      showAlert('Dark Mode Enabled', 'success');
     } else {
-      this.setState({ mode: 'light' })
+      setMode('light')
       document.body.style.backgroundColor = 'white';
-      this.showAlert('Light Mode Enabled', 'success');
+      showAlert('Light Mode Enabled', 'success');
     }
   }
 
   
-  setProgress = (progress) => {
-    this.setState({progress: progress})
-  }
+  // const setProgress = (progress) => {
+  //   setProgress(progress);
+  // }
 
-  render() {
     return (
       <div>
         <Router>
-          <Navbar mode={this.mode} toggleMode={this.toggleMode} />
+          <Navbar mode={mode} toggleMode={toggleMode} />
           <LoadingBar
             // color='#f11946'
             color='#076696'
             height={3}
-            progress={this.state.progress}
+            progress={progress}
             // onLoaderFinished={() => setProgress(0)}
           />
           <Routes>
-            <Route exact path='/' element={<News setProgress={this.setProgress} key='general' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='general' />} />
-            <Route exact path='/business' element={<News setProgress={this.setProgress} key='business' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='business' />} />
-            <Route exact path='/entertainment' element={<News setProgress={this.setProgress} key='entertainment' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='entertainment' />} />
-            <Route exact path='/health' element={<News setProgress={this.setProgress} key='health' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='health' />} />
-            <Route exact path='/science' element={<News setProgress={this.setProgress} key='science' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='science' />} />
-            <Route exact path='/sports' element={<News setProgress={this.setProgress} key='sports' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='sports' />} />
-            <Route exact path='/technology' element={<News setProgress={this.setProgress} key='technology' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} country='in' category='technology' />} />
-            <Route exact path='/techcrunchnews' element={<TechCrunchNews setProgress={this.setProgress} key='techcrunch' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} category='techcrunch' />} />
-            <Route exact path='/gadgetes360' element={<Gadgets360News setProgress={this.setProgress} key='gadgetes360' mode={this.state.mode} pageSize={12} apiKey={this.apiKey} category='gadgetes360' />} />
+            <Route exact path='/' element={<News setProgress={setProgress} key='general' mode={mode} pageSize={12} apiKey={apiKey} country='in' category='general' />} />
+            <Route exact path='/business' element={<News setProgress={setProgress} key='business' mode={mode} pageSize={12} apiKey={apiKey} country='in' category='business' />} />
+            <Route exact path='/entertainment' element={<News setProgress={setProgress} key='entertainment' mode={mode} pageSize={12} apiKey={apiKey} country='in' category='entertainment' />} />
+            <Route exact path='/health' element={<News setProgress={setProgress} key='health' mode={mode} pageSize={12} apiKey={apiKey} country='in' category='health' />} />
+            <Route exact path='/science' element={<News setProgress={setProgress} key='science' mode={mode} pageSize={12} apiKey={apiKey} country='in' category='science' />} />
+            <Route exact path='/sports' element={<News setProgress={setProgress} key='sports' mode={mode} pageSize={12} apiKey={apiKey} country='in' category='sports' />} />
+            <Route exact path='/technology' element={<News setProgress={setProgress} key='technology' mode={mode} pageSize={12} apiKey={apiKey} country='in' category='technology' />} />
+            <Route exact path='/techcrunchnews' element={<TechCrunchNews setProgress={setProgress} key='techcrunch' mode={mode} pageSize={12} apiKey={apiKey} category='techcrunch' />} />
+            <Route exact path='/gadgetes360' element={<Gadgets360News setProgress={setProgress} key='gadgetes360' mode={mode} pageSize={12} apiKey={apiKey} category='gadgetes360' />} />
           </Routes>
           <ScrollToTopButton />
         </Router>
       </div>
     )
-  }
 }
