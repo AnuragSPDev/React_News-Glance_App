@@ -7,10 +7,10 @@ export default function ScrollToTopButton() {
     const handleScroll = () => {
         if (window.scrollY > 200) {
             console.log(`scrollY: ${window.scrollY}`);
-            setIsVisible({ isVisible: true });
+            setIsVisible(true);
         } else {
             console.log(`scrollY: ${window.scrollY}`);
-            setIsVisible({ isVisible: false });
+            setIsVisible(false);
         }
     }
 
@@ -19,13 +19,18 @@ export default function ScrollToTopButton() {
             top: 0,
             behavior: 'smooth'
         });
-    }
-
-    useEffect(() =>{
+    };
+    
+    
+    useEffect(() => {
         window.addEventListener('scroll', handleScroll);
-        window.removeEventListener('scroll', handleScroll);
-    })
-
+        
+        // Cleanup function to remove the event listener
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []); 
+    
     return (
         <div>
             <button

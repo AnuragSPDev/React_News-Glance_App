@@ -7,95 +7,57 @@ import Spinner from './Spinner';
 
 export default function TechCrunchNews(props) {
 
-    // static propTypes = {
-    //     mode: PropTypes.string,
-    //     pageSize: PropTypes.number,
-    //     country: PropTypes.string,
-    //     category: PropTypes.string,
-    //     setProgress: PropTypes.func,
-    // };
-
-    // static defaultProps = {
-    //     mode: 'light',
-    //     pageSize: 10,
-    //     country: 'in',
-    //     category: 'techcrunch',
-    //     setProgress: () => { }
-    // }
-
     const { category, apiKey, pageSize, setProgress, mode } = props;
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [totalResults, setTotalResults] = useState(0);
 
-    // constructor(props) {
-    //     super(props);
-    //     // console.log('Constructor here');
-    //     this.state = {
-    //         articles: [],
-    //         loading: false,
-    //         page: 1
-    //     }
-    //     let title = this.capitalizeFirstLetter(props.category);
-    //     document.title = `News@Glance - ${title}`;
-    // }
-
     const capitalizeFirstLetter = (string) => {
         if (typeof string !== 'string') return '';
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-
-
     const updateNews = useCallback(async () => {
-        let url = `https://newsapi.org/v2/everything?domains=techcrunch.com&apiKey=${apiKey}&page=${page}&pageSize=${pageSize}`;
+        let url = `https://newsapi.org/v2/everything?domains=techcrunch.com&apiKey=${apiKey}&page=${1}&pageSize=${pageSize}`;
         setLoading(true);
         setProgress(20);
-        let response = await fetch(url);
-        setProgress(50);
-        let data = await response.json();
-        setProgress(70);
-        setArticles(data.articles);
-        setTotalResults(data.totalResults);
-        setLoading(false);
-        // this.setState({
-        //     articles: data.articles,
-        //     totalResults: data.totalResults,
-        //     loading: false
-        // })
-        setProgress(100);
-    }, [apiKey, page, pageSize, setProgress]);
+        try {
+            let response = await fetch(url);
+            setProgress(50);
+            let data = await response.json();
+            setProgress(70);
+            setArticles(data.articles);
+            setTotalResults(data.totalResults);
+        } catch (error) {
+            console.error("Error fetching more data:", error);
+        } finally {
+            setLoading(false);
+            setProgress(100);
+        }
+    }, [apiKey, pageSize, setProgress]);
 
     useEffect(() => {
         let title = capitalizeFirstLetter(category);
         document.title = `News@Glance - ${title}`;
         updateNews();
-    }, [updateNews]);
-
-    // const syncState = (state) => {
-    //     return new Promise((resolve) => {
-    //         setPage(state, resolve);
-    //     });
-    // }
+    }, [updateNews, category]);
 
     const fetchMoreData = async () => {
-        // await syncState({ page: page + 1 })
-        // await syncState(page + 1)
+        if (loading || articles.length >= totalResults) return;  // to prevent multiple requests
         const nextPage = page + 1;
-        let url = `https://newsapi.org/v2/everything?domains=techcrunch.com&apiKey=${apiKey}&page=${page}&pageSize=${pageSize}`;
+        let url = `https://newsapi.org/v2/everything?domains=techcrunch.com&apiKey=${apiKey}&page=${nextPage}&pageSize=${pageSize}`;
         setLoading(true);
-        let response = await fetch(url);
-        let data = await response.json();
-        setArticles((articles) => articles.concat(data.articles));
-        setTotalResults(data.totalResults);
-        setPage(nextPage);
-        setLoading(false);
-        // this.setState({
-        //     articles: this.state.articles.concat(data.articles),
-        //     totalResults: data.totalResults,
-        //     loading: false
-        // })
+        try {
+            let response = await fetch(url);
+            let data = await response.json();
+            setArticles((articles) => articles.concat(data.articles));
+            setPage(nextPage);
+        } catch (error) {
+            console.error("Error fetching more data:", error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -111,7 +73,6 @@ export default function TechCrunchNews(props) {
             >
                 <div className="container">
                     <div className="row mx-2 my-4">
-                        {/* {!this.state.loading && this.state.articles.map((element) => { */}
                         {articles.map((element) => {
                             return <div className="col-md-4 my-2" key={element.url}>
                                 <NewsItem title={element.title ? element.title.slice(0, 40) : ''}
@@ -127,11 +88,6 @@ export default function TechCrunchNews(props) {
                     </div>
                 </div>
             </InfiniteScroll>
-            {/* <div className="container d-flex justify-content-around">
-                <button disabled={this.state.page <= 1} type="button" className="btn btn-dark" onClick={this.handlePrevClick}>&larr; Prev</button>
-                <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / props.pageSize)} type="button" className="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button>
-            </div> */}
-            {/* </div> */}
         </>
     )
 }
